@@ -1,86 +1,234 @@
 <!DOCTYPE html>
-<!-- lang="vi" khai báo ngôn ngữ trang → hỗ trợ screen reader & SEO -->
 <html lang="vi">
-
 <head>
-  <!-- ========== METADATA BẮT BUỘC ========== -->
   <meta charset="UTF-8" />
-  <!-- viewport: nền tảng của responsive mobile-first, khóa tỉ lệ 1:1 với thiết bị -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio CV của Phạm Văn Hiệp – Frontend Developer. Dự án, kỹ năng và thông tin liên hệ." />
+  <meta name="description" content="Portfolio CV của Phạm Văn Hiệp – Frontend Developer. Giới thiệu, kỹ năng, dự án và liên hệ." />
   <meta name="author" content="Phạm Văn Hiệp" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Phạm Văn Hiệp · Frontend Developer</title>
   <style>
-    
+/* Portfolio CV – Responsive, animation nhẹ, tôn trọng reduced-motion */
+:root {
+  --ink: #15233b;
+  --ink-soft: #61718a;
+  --pink: #d80c59;
+  --pink-dark: #af0b4c;
+  --violet: #7757f7;
+  --line: #e9eaf2;
+  --surface: #ffffff;
+  --soft-bg: #f7f9fd;
+  --shadow: 0 12px 40px rgba(25,35,65,.09);
+  --radius: 20px;
+  --container-max: 1200px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 94px; }
+body { margin: 0; background: var(--surface); color: var(--ink); font: 400 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow-x: clip; }
+img { max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 4px; }
+.container { width: min(var(--container-max), calc(100% - 40px)); margin-inline: auto; }
+.scroll-progress { position: fixed; inset: 0 auto auto 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--pink), var(--violet)); transform: scaleX(0); transform-origin: left center; z-index: 1200; pointer-events: none; }
+
+/* Thanh điều hướng */
+.site-header { position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(230,232,239,.85); background: rgba(255,255,255,.86); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); transition: box-shadow .3s ease, background .3s ease; }
+.site-header.is-scrolled { box-shadow: 0 8px 28px rgba(26,33,56,.075); background: rgba(255,255,255,.96); }
+.header-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 28px; padding-block: 12px; }
+.brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 780; letter-spacing: -.02em; white-space: nowrap; }
+.brand-mark { display: grid; place-items: center; width: 40px; height: 40px; color: white; border-radius: 12px; background: linear-gradient(135deg, #e40b67, #a90b56); box-shadow: 0 8px 20px rgba(216,12,89,.2); transition: transform .35s ease; }
+.brand:hover .brand-mark { transform: rotate(-8deg) scale(1.06); }
+.nav-list { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0; padding: 0; list-style: none; }
+.nav-list a { position: relative; display: inline-block; padding-block: 7px; color: #586985; font-weight: 620; transition: color .2s ease; }
+.nav-list a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--pink); transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+.nav-list a:hover, .nav-list a:focus-visible { color: var(--pink); }
+.nav-list a:hover::after, .nav-list a:focus-visible::after { transform: scaleX(1); }
+
+/* Hero */
+.hero { position: relative; isolation: isolate; overflow: hidden; background: radial-gradient(circle at 78% 23%, rgba(236,211,255,.48), transparent 34%), radial-gradient(circle at 6% 85%, rgba(255,226,239,.7), transparent 37%), linear-gradient(180deg, #fff 0%, #fcfcff 100%); }
+.hero::before { content: ''; position: absolute; z-index: -1; width: 550px; height: 550px; right: -200px; top: -230px; border: 1px solid rgba(217,178,228,.25); border-radius: 50%; }
+.hero-inner { display: grid; grid-template-columns: 1fr; align-items: center; gap: 55px; padding-block: 86px 102px; }
+.hero-text { animation: hero-arrive .9s both; }
+.eyebrow, .section-kicker { margin: 0 0 15px; font-size: .78rem; letter-spacing: .16em; font-weight: 790; color: var(--pink); }
+.eyebrow-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: #16b99a; box-shadow: 0 0 0 5px rgba(22,185,154,.13); vertical-align: middle; }
+.hero-title { margin: 0; line-height: 1.13; letter-spacing: -.055em; font-weight: 820; font-size: clamp(2.9rem, 6.5vw, 5.15rem); }
+.hero-title span { color: var(--pink); }
+.hero-role { margin: 20px 0 13px; font-weight: 730; color: #7d50cf; font-size: clamp(1.1rem, 2.3vw, 1.35rem); }
+.hero-role span { color: var(--pink); padding-inline: 6px; }
+.hero-desc { max-width: 570px; margin: 0; color: var(--ink-soft); font-size: 1.045rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 50px; padding: 12px 23px; border: 1px solid transparent; border-radius: 12px; font-weight: 730; line-height: 1.4; transition: transform .26s ease, box-shadow .26s ease, color .26s ease, background .26s ease; }
+.btn span { font-size: 1.2em; transition: transform .26s ease; }
+.btn:hover { transform: translateY(-3px); }
+.btn:hover span { transform: translate(3px,-2px); }
+.btn-primary, .btn-send { color: #fff; background: linear-gradient(120deg, #df0a5d, #b50b72); box-shadow: 0 10px 27px rgba(216,12,89,.2); }
+.btn-primary:hover, .btn-send:hover { box-shadow: 0 14px 31px rgba(216,12,89,.3); }
+.btn-outline { border-color: #edb9cf; color: var(--pink); background: #fff; }
+.btn-outline:hover { background: #fff4f8; box-shadow: 0 9px 22px rgba(216,12,89,.08); }
+.hero-avatar { justify-self: center; position: relative; width: min(100%, 390px); margin: 0; animation: hero-avatar-in 1s .14s both, float-slow 7s 1.14s ease-in-out infinite; }
+.hero-avatar::before { content: ''; position: absolute; inset: -15px; z-index: -1; border-radius: 34px; background: linear-gradient(140deg, rgba(224,48,113,.18), rgba(114,80,243,.18)); transform: rotate(-4deg); }
+.hero-avatar img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 26px; border: 6px solid #fff; box-shadow: 0 23px 55px rgba(30,39,79,.18); background: #eee4f4; }
+.avatar-caption { position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; white-space: nowrap; padding: 9px 15px; border: 1px solid #e8eaf1; border-radius: 100px; background: #fff; box-shadow: 0 9px 23px rgba(22,32,61,.12); color: #42516e; font-size: .8rem; font-weight: 650; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #11bc87; box-shadow: 0 0 0 4px rgba(17,188,135,.12); }
+
+/* Sections + skills */
+.section { padding-block: 90px; }
+.section-title { margin: 0; font-size: clamp(1.9rem, 4.2vw, 2.7rem); line-height: 1.22; letter-spacing: -.035em; }
+.section-sub { max-width: 660px; margin: 13px 0 0; color: var(--ink-soft); }
+.skill-grid { list-style: none; display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 0; padding: 0; }
+.skill-chip { padding: 11px 18px; color: #315276; font-size: .91rem; font-weight: 700; border: 1px solid #dfe7f3; border-radius: 999px; background: linear-gradient(180deg, #f8fbff, #edf5ff); transition: transform .26s ease, box-shadow .26s ease, border-color .26s ease; }
+.skill-chip:hover { transform: translateY(-4px); border-color: #f0b2cd; box-shadow: 0 10px 20px rgba(54,81,146,.11); }
+.section-muted { background: var(--soft-bg); }
+.project-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 24px; margin-top: 34px; }
+.card { min-width: 0; display: flex; flex-direction: column; border: 1px solid #ecedf3; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 7px 24px rgba(29,46,87,.07); transition: transform .34s ease, box-shadow .34s ease; }
+.card:hover { transform: translateY(-8px); box-shadow: 0 22px 45px rgba(34,42,87,.15); }
+.card-media-wrap { overflow: hidden; background: linear-gradient(135deg, #f8dfeb, #dfe4fc); }
+.card-media { display: block; width: 100%; height: auto; aspect-ratio: 5/3; object-fit: cover; transition: transform .6s cubic-bezier(.18,.68,.27,1); }
+.card:hover .card-media { transform: scale(1.055); }
+.card-body { display: flex; flex-direction: column; align-items: start; flex: 1; padding: 23px; }
+.card-title { margin: 0; font-size: 1.2rem; line-height: 1.3; }
+.card-desc { margin: 10px 0 15px; color: var(--ink-soft); font-size: .91rem; }
+.tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 24px; padding: 0; }
+.tag-list li { border-radius: 100px; background: #f1f3f9; color: #60718a; padding: 4px 9px; font-size: .72rem; font-weight: 650; }
+.card-link { margin-top: auto; font-size: .84rem; font-weight: 750; color: var(--pink); }
+.card-link-pending { color: #9a6b7f; }
+
+/* Liên hệ: toàn khối nằm giữa trang, thông tin + biểu mẫu chung một card */
+.contact-section { position: relative; overflow: hidden; background: radial-gradient(circle at 10% 78%, rgba(251,220,234,.5), transparent 27%), radial-gradient(circle at 90% 17%, rgba(230,225,254,.55), transparent 25%), #fff; }
+.contact-heading { max-width: 720px; margin: 0 auto 38px; text-align: center; }
+.contact-heading .section-sub { margin-inline: auto; }
+.contact-shell { display: grid; grid-template-columns: minmax(0,1fr); width: min(100%, 1010px); margin: 0 auto; border: 1px solid #eceaf3; border-radius: 28px; overflow: hidden; background: #fff; box-shadow: 0 24px 70px rgba(37,36,83,.11); }
+.contact-info { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; padding: clamp(30px, 5vw, 58px); background: linear-gradient(150deg, #242342 10%, #3d2758 62%, #792456 130%); color: #fff; }
+.contact-info::before { content: ''; position: absolute; z-index: -1; width: 370px; aspect-ratio: 1; border-radius: 50%; right: -180px; top: -195px; background: radial-gradient(circle, rgba(248,88,164,.37), transparent 73%); }
+.contact-info::after { content: ''; position: absolute; z-index: -1; width: 300px; aspect-ratio: 1; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; left: -170px; bottom: -140px; }
+.contact-overline, .form-eyebrow { font-size: .75rem; letter-spacing: .15em; font-weight: 790; }
+.contact-overline { color: #f8abc9; }
+.contact-info h3 { max-width: 340px; margin: 19px 0 15px; font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 1.25; letter-spacing: -.035em; }
+.contact-info h3 em { color: #ffc3db; font-style: normal; }
+.contact-intro { max-width: 360px; margin: 0; color: #d7cee4; font-size: .9rem; }
+.contact-list { list-style: none; display: grid; gap: 25px; padding: 0; margin: 42px 0 45px; }
+.contact-list li { min-width: 0; display: flex; align-items: center; gap: 14px; }
+.contact-list li > span:last-child { min-width: 0; display: flex; flex-direction: column; line-height: 1.4; overflow-wrap: anywhere; font-size: .93rem; }
+.contact-label { margin-bottom: 5px; font-size: .67rem; color: #d7bdd7; letter-spacing: .09em; font-weight: 730; }
+.contact-list a { transition: color .2s ease; }
+.contact-list a:hover { color: #ffb6d0; text-decoration: underline; text-underline-offset: 3px; }
+.contact-icon { display: grid; flex: 0 0 43px; width: 43px; height: 43px; place-items: center; border: 1px solid rgba(255,255,255,.19); border-radius: 13px; background: rgba(255,255,255,.11); font-size: 1.28rem; }
+.contact-deco { margin-top: auto; color: rgba(255,255,255,.2); font-size: 4.5rem; line-height: .7; }
+.contact-form { min-width: 0; padding: clamp(30px, 5vw, 54px); }
+.form-eyebrow { margin: 0; color: var(--pink); }
+.contact-form h3 { margin: 10px 0 27px; font-size: clamp(1.6rem, 3vw, 2rem); letter-spacing: -.035em; line-height: 1.3; }
+.contact-form h3 span { color: var(--pink); }
+.contact-inputs { display: grid; grid-template-columns: minmax(0,1fr); gap: 17px; }
+.form-field { min-width: 0; margin-bottom: 20px; }
+.form-field label { display: block; margin-bottom: 8px; color: #27354b; font-size: .85rem; font-weight: 760; }
+.form-field input, .form-field textarea { display: block; width: 100%; min-width: 0; padding: 13px 15px; border: 1px solid #dce1ed; border-radius: 11px; background: #fafbfe; color: var(--ink); outline: 0; resize: vertical; transition: background .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.form-field input::placeholder, .form-field textarea::placeholder { color: #919aab; }
+.form-field input:focus, .form-field textarea:focus { background: #fff; border-color: #dc5c95; box-shadow: 0 0 0 4px rgba(223,10,93,.09); }
+.btn-send { border: none; min-width: 188px; }
+.form-note { max-width: 430px; margin: 16px 0 0; color: #78859a; font-size: .78rem; line-height: 1.5; }
+
+/* Footer */
+.site-footer { background: #f8f9fc; border-top: 1px solid var(--line); }
+.footer-inner { min-height: 92px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 20px; padding-block: 20px; }
+.footer-inner p { margin: 0; color: #72809b; font-size: .83rem; }
+.to-top { color: var(--pink); font-size: .87rem; font-weight: 710; transition: transform .25s ease; }
+.to-top:hover { transform: translateY(-3px); }
+
+/* Scroll reveal: chỉ ẩn phần tử khi JS đã bật; nếu không có JS, nội dung vẫn hiển thị. */
+.js-enabled .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.19,1,.22,1); transition-delay: var(--reveal-delay, 0ms); }
+.js-enabled .reveal.is-visible { opacity: 1; transform: translateY(0); }
+@keyframes hero-arrive { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-avatar-in { from { opacity: 0; transform: translateY(22px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes float-slow { 0%, 100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+
+@media (min-width: 768px) {
+  .hero-inner { grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 44px; }
+  .hero-avatar { justify-self: end; }
+  .project-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .contact-shell { grid-template-columns: minmax(0,.94fr) minmax(0,1.06fr); }
+}
+@media (min-width: 940px) {
+  .contact-inputs { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (min-width: 1280px) {
+  .project-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+@media (max-width: 599px) {
+  html { scroll-padding-top: 132px; }
+  .container { width: calc(100% - 32px); }
+  .header-inner { justify-content: center; gap: 6px 25px; }
+  .nav-list { justify-content: center; gap: 6px 18px; }
+  .nav-list a { font-size: .87rem; }
+  .hero-inner { padding-block: 65px 78px; gap: 46px; }
+  .hero-title { font-size: clamp(2.6rem, 12vw, 4rem); }
+  .hero-avatar { width: min(100% - 26px, 340px); justify-self: center; }
+  .section { padding-block: 65px; }
+  .contact-heading { margin-bottom: 28px; }
+  .contact-shell { border-radius: 22px; }
+  .contact-info, .contact-form { padding: 30px 24px; }
+  .contact-list { margin-bottom: 25px; }
+  .footer-inner { justify-content: center; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
+  .js-enabled .reveal { opacity: 1; transform: none; }
+}
+
   </style>
 
-  <!-- Liên kết tới file CSS tách rời (yêu cầu của bài) -->
-  <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
-
 <body>
+  <div class="scroll-progress" aria-hidden="true"></div>
 
-  <!-- ========================================================== -->
-  <!-- HEADER: nhận diện + điều hướng chính                        -->
-  <!-- ========================================================== -->
   <header class="site-header">
     <div class="container header-inner">
-      <!-- Thương hiệu cá nhân -->
       <a class="brand" href="#top" aria-label="Về đầu trang">
         <span class="brand-mark" aria-hidden="true">H</span>
         <span class="brand-name">Phạm Văn Hiệp</span>
       </a>
-
-      <!-- NAV dùng Flexbox (xem styles.css) -->
       <nav class="main-nav" aria-label="Điều hướng chính">
         <ul class="nav-list">
           <li><a href="#about">Giới thiệu</a></li>
           <li><a href="#skills">Kỹ năng</a></li>
           <li><a href="#projects">Dự án</a></li>
-          <li><a href="#contact" >Liên hệ</a></li>
+          <li><a href="#contact">Liên hệ</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- ========================================================== -->
-  <!-- MAIN: toàn bộ nội dung chính của trang                      -->
-  <!-- ========================================================== -->
   <main id="top">
-    <!-- ----- SECTION: Giới thiệu / Hero ----- -->
-    <section id="about" class="hero">
+    <section id="about" class="hero" aria-labelledby="about-title">
       <div class="container hero-inner">
         <div class="hero-text">
-          <p class="eyebrow">Xin chào, tôi là</p>
-          <h1 class="hero-title">Phạm Văn Hiệp</h1>
-          <p class="hero-role">Frontend Developer &amp; UI Enthusiast</p>
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> XIN CHÀO, TÔI LÀ</p>
+          <h1 id="about-title" class="hero-title">Phạm Văn <span>Hiệp</span></h1>
+          <p class="hero-role">Frontend Developer <span aria-hidden="true">✦</span> UI Enthusiast</p>
           <p class="hero-desc">
             Tôi xây dựng giao diện web sạch sẽ, dễ tiếp cận và responsive.
-            Tốt nghiệp ngành Công nghệ thông tin, yêu thích HTML/CSS ngữ nghĩa
+            Là sinh viên ngành Công nghệ thông tin, tôi yêu thích HTML/CSS ngữ nghĩa
             và trải nghiệm người dùng tối giản.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#projects">Xem dự án</a>
-            <a class="btn btn-outline" href="#contact">Liên hệ tôi</a>
+            <a class="btn btn-primary" href="#projects">Xem dự án <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-outline" href="#contact">Liên hệ tôi <span aria-hidden="true">→</span></a>
           </div>
         </div>
-
-        <!-- Ảnh đại diện: dùng placeholder, thay bằng ảnh thật của bạn -->
         <figure class="hero-avatar">
-          <img
-            src="assets/img/avatar.jpg"
-            alt="Ảnh đại diện của Phạm Văn Hiệp"
-            width="320" height="320" />
+          <img src="./assets/img/avatar.jpg" alt="Ảnh đại diện của Phạm Văn Hiệp" width="420" height="420" />
+          <figcaption class="avatar-caption"><span class="status-dot" aria-hidden="true"></span> Sẵn sàng học hỏi và hợp tác</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- ----- SECTION: Kỹ năng ----- -->
-    <section id="skills" class="section">
-      <div class="container">
-        <h2 class="section-title">Kỹ năng</h2>
-        <p class="section-sub">Những công nghệ và kỹ năng tôi sử dụng thường xuyên.</p>
-
+    <section id="skills" class="section skills-section" aria-labelledby="skills-title">
+      <div class="container reveal">
+        <p class="section-kicker">01 / KỸ NĂNG</p>
+        <h2 id="skills-title" class="section-title">Công nghệ tôi sử dụng</h2>
+        <p class="section-sub">Những công nghệ và kỹ năng tôi đang học hỏi, thực hành mỗi ngày.</p>
         <ul class="skill-grid">
           <li class="skill-chip">HTML5</li>
           <li class="skill-chip">CSS3 / Flexbox / Grid</li>
@@ -92,138 +240,163 @@
       </div>
     </section>
 
-    <!-- ----- SECTION: Dự án (danh sách thẻ dùng CSS Grid) ----- -->
-    <section id="projects" class="section section-muted">
+    <section id="projects" class="section section-muted" aria-labelledby="projects-title">
       <div class="container">
-        <h2 class="section-title">Dự án tiêu biểu</h2>
-        <p class="section-sub">Một vài sản phẩm tôi đã thực hiện.</p>
-
-        <!-- .project-grid dùng CSS Grid (xem styles.css) -->
+        <div class="reveal">
+          <p class="section-kicker">02 / DỰ ÁN</p>
+          <h2 id="projects-title" class="section-title">Dự án tiêu biểu</h2>
+          <p class="section-sub">Một vài sản phẩm và bài thực hành tôi đã thực hiện.</p>
+        </div>
         <div class="project-grid">
-
-          <!-- Mỗi thẻ là một <article> độc lập, có thể đứng riêng -->
-          <article class="card">
-            <img class="card-media"
-              src="./assets/img/trần-bình.jpg"
-              alt="Ảnh minh họa dự án Landing Page" width="600" height="360" />
+          <article class="card reveal" style="--reveal-delay: 0ms">
+            <div class="card-media-wrap"><img class="card-media" src="./assets/img/trần-bình.jpg" alt="Ảnh minh họa dự án Trần Bình" width="600" height="360" loading="lazy" /></div>
             <div class="card-body">
               <h3 class="card-title">Trần Bình</h3>
-              <p class="card-desc">
-                Trang giới thiệu sản phẩm responsive, tối ưu tốc độ tải và SEO cơ bản.
-              </p>
-              <ul class="tag-list">
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>Grid</li>
-              </ul>
-              <a class="card-link" href="#">Xem chi tiết →</a>
+              <p class="card-desc">Trần Bình (Tên Thật Là Trần Văn Bình) sinh năm 6/9/2003 sinh ra ở mảnh đất Ba Vì Hà Nội Hiện Tại Đang Là 1 Streamer Liên Quân, Anh Được Mọi Người Biết Đến Với Kĩ Năng Chơi Game Đỉnh Cao.</p>
+              <ul class="tag-list"><li>HTML</li><li>CSS</li><li>Grid</li></ul>
+              <span class="card-link card-link-pending">Chi tiết đang cập nhật</span>
             </div>
           </article>
-
-          <article class="card">
-            <img class="card-media"
-              src="./assets/img/image.png"
-              alt="Ảnh minh họa dự án Todo App" width="600" height="360" />
+          <article class="card reveal" style="--reveal-delay: 90ms">
+            <div class="card-media-wrap"><img class="card-media" src="./assets/img/image.png" alt="Ảnh minh họa dự án Khang Rồng" width="600" height="360" loading="lazy" /></div>
             <div class="card-body">
               <h3 class="card-title">Khang Rồng</h3>
-              <p class="card-desc">
-                Ứng dụng quản lý công việc với lưu trữ cục bộ và giao diện tối giản.
-              </p>
-              <ul class="tag-list">
-                <li>JavaScript</li>
-                <li>Flexbox</li>
-              </ul>
-              <a class="card-link" href="#">Xem chi tiết →</a>
+              <p class="card-desc">Khang Rồng (tên thật là Nguyễn Minh Khang) sinh năm 2002 là một TikToker và nhà sáng tạo nội dung đời sống/giải trí.</p>
+              <ul class="tag-list"><li>JavaScript</li><li>Flexbox</li></ul>
+              <span class="card-link card-link-pending">Chi tiết đang cập nhật</span>
             </div>
           </article>
-
-          <article class="card">
-            <img class="card-media"
-              src="./assets/img/bopbop.jpg"
-              alt="Ảnh minh họa dự án Weather Dashboard" width="600" height="360" />
+          <article class="card reveal" style="--reveal-delay: 180ms">
+            <div class="card-media-wrap"><img class="card-media" src="./assets/img/bopbop.jpg" alt="Ảnh minh họa dự án Bốp Bốp" width="600" height="360" loading="lazy" /></div>
             <div class="card-body">
               <h3 class="card-title">Bốp Bốp</h3>
-              <p class="card-desc">
-                Bảng điều khiển thời tiết lấy dữ liệu từ API công khai, hiển thị theo thẻ.
-              </p>
-              <ul class="tag-list">
-                <li>API</li>
-                <li>Grid</li>
-              </ul>
-              <a class="card-link" href="#">Xem chi tiết →</a>
+              <p class="card-desc">Bốp Bốp (streamer Liên Quân Mobile / "Thầy giáo Bốp", tên thật Phạm Tuấn Tú): Sinh ngày 23/12/1999.</p>
+              <ul class="tag-list"><li>API</li><li>Grid</li></ul>
+              <span class="card-link card-link-pending">Chi tiết đang cập nhật</span>
             </div>
           </article>
-
-          <article class="card">
-            <img class="card-media"
-              src="./assets/img/thenguyen1.jpg"
-              alt="Ảnh minh họa dự án Blog cá nhân" width="600" height="360" />
+          <article class="card reveal" style="--reveal-delay: 270ms">
+            <div class="card-media-wrap"><img class="card-media" src="./assets/img/thenguyen1.jpg" alt="Ảnh minh họa dự án Thế Nguyên 2K4" width="600" height="360" loading="lazy" /></div>
             <div class="card-body">
               <h3 class="card-title">Thế Nguyên 2K4</h3>
-              <p class="card-desc">
-                Blog tĩnh với bố cục dạng lưới, hỗ trợ đọc tốt trên mọi thiết bị.
-              </p>
-              <ul class="tag-list">
-                <li>HTML</li>
-                <li>CSS</li>
-              </ul>
-              <a class="card-link" href="#">Xem chi tiết →</a>
+              <p class="card-desc">Nguyên 2K4 (tên thật là Nguyễn Hoàng Nguyên, sinh năm 2004) là một TikToker và nhà sáng tạo nội dung (content creator) nổi tiếng trên mạng xã hội Việt Nam..</p>
+              <ul class="tag-list"><li>HTML</li><li>CSS</li></ul>
+              <span class="card-link card-link-pending">Chi tiết đang cập nhật</span>
             </div>
           </article>
-
-        </div><!-- /.project-grid -->
-      </div>
-    </section>
-
-    <!-- ----- SECTION: Liên hệ ----- -->
-    <section id="contact" class="section">
-      <div class="container contact-inner">
-        <h2 class="section-title">Liên hệ</h2>
-        <p class="section-sub">Mở cho các cơ hội thực tập &amp; việc làm Frontend.</p>
-
-        <ul class="contact-list">
-          <li><span class="contact-label">Email</span> <a href="email:qvanhiep08@gmail.com">qvanhiep08@gmail.com</a></li>
-          <li><span class="contact-label">GitHub</span> <a href="#">github.com/phamvanviep</a></li>
-          <li><span class="contact-label">LinkedIn</span> <a href="#">linkedin.com/in//phamvanviep</a></li>
-        </ul>
-      </div>
-    </section>
-    <section id="contact" class="contact-section">
-    <h2 class="contact-title">CONTACT</h2>
-    <p class="contact-subtitle">Fan? Drop a note!</p>
-
-    <div class="contact-container">
-        <div class="contact-info">
-            <p><span class="contact-icon">📍</span> Hà Nội, Việt Nam</p>
-            <p><span class="contact-icon">☎</span> Phone: +84 123 456 789</p>
-            <p><span class="contact-icon">✉</span> Email: qvanhiep08@gmail.com</p>
         </div>
+      </div>
+    </section>
 
-        <form class="contact-form">
+    <!-- Chỉ có MỘT section #contact; toàn bộ khối được căn giữa -->
+    <section id="contact" class="section contact-section" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="contact-heading reveal">
+          <p class="section-kicker">03 / LIÊN HỆ</p>
+          <h2 id="contact-title" class="section-title">Cùng kết nối nhé!</h2>
+          <p class="section-sub">Tôi luôn chào đón những cơ hội học hỏi, thực tập và hợp tác về Frontend.</p>
+        </div>
+        <div class="contact-shell reveal">
+          <div class="contact-info">
+            <span class="contact-overline">KẾT NỐI VỚI TÔI</span>
+            <h3>Hãy cùng tạo nên <em>điều tuyệt vời.</em></h3>
+            <p class="contact-intro">Bạn có ý tưởng hoặc muốn trao đổi về một dự án? Tôi rất vui khi nhận được lời nhắn.</p>
+            <ul class="contact-list">
+              <li>
+                <span class="contact-icon" aria-hidden="true">✉</span>
+                <span><span class="contact-label">EMAIL</span><a href="mailto:qvanhiep08@gmail.com">qvanhiep08@gmail.com</a></span>
+              </li>
+              <li>
+                <span class="contact-icon" aria-hidden="true">⌘</span>
+                <span><span class="contact-label">GITHUB</span><a href="https://github.com/qvanhiep08-glitch/CV" target="_blank" rel="noopener noreferrer">github.com/qvanhiep08-glitch/CV</a></span>
+              </li>
+              <li>
+                <span class="contact-icon" aria-hidden="true">⌖</span>
+                <span><span class="contact-label">ĐỊA ĐIỂM</span><span>Hà Nội, Việt Nam</span></span>
+              </li>
+            </ul>
+            <div class="contact-deco" aria-hidden="true">✳</div>
+          </div>
+          <form id="contact-form" class="contact-form">
+            <p class="form-eyebrow">GỬI LỜI NHẮN</p>
+            <h3>Để lại lời nhắn <span aria-hidden="true">✦</span></h3>
             <div class="contact-inputs">
-                <input type="text" placeholder="Name" required>
-                <input type="email" placeholder="Email" required>
+              <div class="form-field"><label for="contact-name">Họ và tên</label><input id="contact-name" name="name" type="text" autocomplete="name" placeholder="Tên của bạn" maxlength="100" required /></div>
+              <div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" placeholder="ten@example.com" maxlength="200" required /></div>
             </div>
-
-            <textarea placeholder="Message" rows="2" required></textarea>
-
-            <button type="submit">SEND</button>
-        </form>
-    </div>
-</section>
-
+            <div class="form-field"><label for="contact-message">Nội dung</label><textarea id="contact-message" name="message" rows="5" placeholder="Bạn muốn trao đổi điều gì?" maxlength="3000" required></textarea></div>
+            <button type="submit" class="btn btn-send">Gửi lời nhắn <span aria-hidden="true">↗</span></button>
+            <p class="form-note">Nút gửi sẽ mở ứng dụng email trên thiết bị của bạn để bạn xác nhận gửi. Website chưa có máy chủ lưu tin nhắn.</p>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- ========================================================== -->
-  <!-- FOOTER                                                      -->
-  <!-- ========================================================== -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>© 2026 Phạm Văn Hiệp. Thiết kế &amp; xây dựng bằng HTML5 + CSS3.</p>
+      <p>© 2026 Phạm Văn Hiệp. Thiết kế &amp; xây dựng bằng HTML5, CSS3 &amp; JavaScript.</p>
       <a href="#top" class="to-top">↑ Lên đầu trang</a>
     </div>
   </footer>
+  <script>
+/* Animation nhẹ + biểu mẫu mailto cho website tĩnh. Không sử dụng thư viện ngoài. */
+(() => {
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  root.classList.add('js-enabled');
 
+  const revealItems = document.querySelectorAll('.reveal');
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -25px 0px' });
+    revealItems.forEach((element) => observer.observe(element));
+  } else {
+    revealItems.forEach((element) => element.classList.add('is-visible'));
+  }
+
+  const progress = document.querySelector('.scroll-progress');
+  const header = document.querySelector('.site-header');
+  let scheduled = false;
+  function updateScrollEffects() {
+    const range = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const ratio = Math.min(1, Math.max(0, window.scrollY / range));
+    if (progress) progress.style.transform = `scaleX(${ratio})`;
+    if (header) header.classList.toggle('is-scrolled', window.scrollY > 12);
+    scheduled = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!scheduled) {
+      scheduled = true;
+      requestAnimationFrame(updateScrollEffects);
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateScrollEffects, { passive: true });
+  updateScrollEffects();
+
+  // Dự án chưa có backend: chỉ tạo mailto để người dùng xác nhận gửi email.
+  const form = document.getElementById('contact-form');
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const name = form.elements.namedItem('name').value.trim();
+      const email = form.elements.namedItem('email').value.trim();
+      const message = form.elements.namedItem('message').value.trim();
+      if (!name || !email || !message) return;
+      const subject = encodeURIComponent(`Lời nhắn từ portfolio - ${name}`);
+      const body = encodeURIComponent(`Họ và tên: ${name}\nEmail: ${email}\n\nNội dung:\n${message}`);
+      window.location.href = `mailto:qvanhiep08@gmail.com?subject=${subject}&body=${body}`;
+    });
+  }
+})();
+
+  </script>
 </body>
-
 </html>
